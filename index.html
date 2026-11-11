@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matriz — Descubre tu margen real</title>
+  <style>
+    /* Variables de color: Azul oscuro, gris y acento cálido */
+    :root {
+      --azul-oscuro: #1e3a8a;
+      --azul-claro: #eff6ff;
+      --gris-texto: #4b5563;
+      --gris-fondo: #f9fafb;
+      --gris-borde: #e5e7eb;
+      --acento: #ea580c;
+      --acento-hover: #c2410c;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--gris-fondo);
+      color: #111;
+      line-height: 1.6;
+    }
+
+    /* 1. Barra superior de transparencia */
+    .top-bar {
+      background: var(--azul-oscuro);
+      color: #fff;
+      text-align: center;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* Contenedor general */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 2. Héroe */
+    .hero {
+      padding: 60px 20px 40px;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--azul-oscuro);
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--gris-texto);
+      margin-bottom: 30px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .btn-cta {
+      display: inline-block;
+      padding: 16px 32px;
+      background: var(--acento);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 18px;
+      transition: background 0.3s;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+    }
+    .btn-cta:hover { background: var(--acento-hover); }
+
+    /* Secciones generales */
+    .section { padding: 40px 0; }
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--azul-oscuro);
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* 3. Sección Problema */
+    .problem-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      border-left: 4px solid var(--acento);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      font-size: 16px;
+      color: var(--gris-texto);
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* 4. Solución y Beneficios */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .benefit-card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--gris-borde);
+      text-align: center;
+    }
+    .benefit-card h3 { font-size: 18px; color: var(--azul-oscuro); margin-bottom: 10px; }
+    .benefit-card p { font-size: 14px; color: var(--gris-texto); }
+
+    /* 5. Cómo funciona */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .step-num {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: var(--azul-claro);
+      color: var(--azul-oscuro);
+      border-radius: 50%;
+      line-height: 40px;
+      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .step h4 { font-size: 16px; color: var(--azul-oscuro); margin-bottom: 6px; }
+    .step p { font-size: 14px; color: var(--gris-texto); }
+
+    /* 6. Prueba Social */
+    .social-proof {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--azul-oscuro);
+      background: var(--azul-claro);
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* 7. Formulario de Validación */
+    .form-section {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 14px; font-weight: 600; color: #333; margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--gris-borde);
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .radio-group { display: flex; gap: 15px; margin-top: 6px; }
+    .radio-group label { font-weight: 400; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+    
+    .privacy-text {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 16px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* 8. CTA Final */
+    .final-cta {
+      text-align: center;
+      padding: 60px 20px;
+      background: #fff;
+      border-top: 1px solid var(--gris-borde);
+    }
+    .final-cta h2 {
+      font-size: 28px;
+      color: var(--azul-oscuro);
+      margin-bottom: 16px;
+    }
+    .final-cta p {
+      color: var(--gris-texto);
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Barra superior de transparencia -->
+  <div class="top-bar">
+    Proyecto en fase de validación. Sé de los primeros en probar la herramienta que evitará que pierdas dinero sin saberlo.
+  </div>
+
+  <!-- 2. Héroe -->
+  <section class="hero container">
+    <h1>¿Sabes realmente cuánto ganas con cada venta? Deja de perder dinero sin darte cuenta.</h1>
+    <p>La calculadora inteligente que te muestra tu costo real en tiempo real. Sin complicaciones, sin Excel, sin suposiciones. Solo claridad para decidir mejor.</p>
+    <a href="#formulario-validacion" class="btn-cta">Quiero probar la calculadora</a>
+  </section>
+
+  <!-- 3. Sección de Problema -->
+  <section class="section container">
+    <div class="problem-box">
+      <p>Llevas tus cuentas en un cuaderno, memoria o en un Excel que ya no cuadra. A fin de mes, el dinero no aparece y no sabes por qué. Vender a ciegas te está costando caro, porque un precio que "parece" bueno puede no cubrir tus costos reales.</p>
+      <p style="margin-top: 15px; font-weight: 600; color: var(--azul-oscuro);">La calculadora de Matriz te da la claridad que necesitas para dejar de adivinar.</p>
+    </div>
+  </section>
+
+  <!-- 4. Solución y Beneficios -->
+  <section class="section container">
+    <h2 class="section-title">¿Por qué usar Matriz?</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <h3>Costo real en tiempo real</h3>
+        <p>Introduce un costo y mira cómo cambia tu margen al instante. Sin fórmulas complejas.</p>
+      </div>
+      <div class="benefit-card">
+        <h3>Sin instalaciones</h3>
+        <p>Funciona directamente en tu móvil o computadora. Sin descargas, sin complicaciones.</p>
+      </div>
+      <div class="benefit-card">
+        <h3>Privacidad garantizada</h3>
+        <p>Tus datos son tuyos, solo tú los ves. El sistema usa la información de forma agregada y anónima para mostrarte promedios de tu sector, nunca datos de otros negocios.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALCULADORA -->
+  <div class="container section" style="padding-top: 0;">
+    <div id="mc-app" style="position:relative;min-height:820px;font-family:system-ui,-apple-system,sans-serif;background:#f9fafb;border-radius:12px;overflow:hidden;">
+
+      <!-- Toggle izquierdo -->
+      <button id="mc-toggle" onclick="mcAbrirPanel()" style="position:absolute;top:12px;left:12px;padding:8px 14px;background:#2563eb;color:#fff;border:none;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(37,99,235,0.35);z-index:10;">
+        ◀ Mis datos (<span id="mc-count">0</span>)
+      </button>
+
+      <!-- Calculadora -->
+      <div id="mc-calc" style="max-width:420px;margin:0 auto;padding:56px 16px 16px;background:#fff;min-height:820px;box-sizing:border-box;">
+        <h3 style="margin:0 0 4px;font-size:18px;color:#111;">🧮 Calcula tu margen real</h3>
+        <p style="margin:0 0 16px;font-size:13px;color:#666;">Descubre si ganas o pierdes con cada producto. Incluye los costos que el Excel no ve.</p>
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Producto</label>
+        <input id="mc-name" type="text" placeholder="Ej: Jabón" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:12px;">
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Fecha de compra</label>
+        <input id="mc-fecha" type="date" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:12px;">
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">¿Cuánto pagaste por unidad? ($)</label>
+        <input id="mc-cost" type="number" inputmode="decimal" placeholder="Ej: 100" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:12px;">
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">¿Cuántas unidades compraste?</label>
+        <input id="mc-qty" type="number" inputmode="numeric" placeholder="Ej: 10" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:12px;">
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Costos extra totales ($) — transporte, empaque, etc.</label>
+        <input id="mc-extra" type="number" inputmode="decimal" placeholder="Ej: 0" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:12px;">
+
+        <label style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">¿A cuánto lo vendes por unidad? ($)</label>
+        <input id="mc-price" type="number" inputmode="decimal" placeholder="Ej: 150" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:15px;box-sizing:border-box;margin-bottom:16px;">
+
+        <button onclick="matrizCalc()" style="width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px;">Calcular y guardar</button>
+        <button onclick="matrizEjemplo()" style="width:100%;padding:10px;background:#fff;color:#2563eb;border:1px solid #2563eb;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">Ver ejemplo</button>
+
+        <div id="mc-result" style="display:none;margin-top:16px;padding:16px;border-radius:8px;font-size:14px;line-height:1.6;"></div>
+      </div>
+
+      <!-- Overlay -->
+      <div id="mc-overlay" onclick="mcCerrarPanel()" style="position:absolute;inset:0;background:rgba(0,0,0,0.4);opacity:0;pointer-events:none;transition:opacity 0.3s;z-index:20;"></div>
+
+      <!-- Panel izquierdo -->
+      <div id="mc-panel" style="position:absolute;top:0;left:0;bottom:0;width:94%;max-width:460px;background:#fff;box-shadow:4px 0 16px rgba(0,0,0,0.15);transform:translateX(-100%);transition:transform 0.3s;z-index:30;display:flex;flex-direction:column;">
+
+        <header style="padding:12px 14px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+          <h3 style="margin:0;font-size:16px;color:#111;">Mis datos</h3>
+          <button onclick="mcCerrarPanel()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#666;padding:0 6px;">✕</button>
+        </header>
+
+        <div style="display:flex;border-bottom:1px solid #eee;">
+          <button id="mc-tab-prod" onclick="mcTab('prod')" style="flex:1;padding:12px;background:none;border:none;border-bottom:3px solid #2563eb;color:#2563eb;font-size:14px;font-weight:700;cursor:pointer;">Productos</button>
+          <button id="mc-tab-vent" onclick="mcTab('vent')" style="flex:1;padding:12px;background:none;border:none;border-bottom:3px solid transparent;color:#666;font-size:14px;font-weight:600;cursor:pointer;">Ventas diarias</button>
+        </div>
+
+        <!-- Pestaña Productos -->
+        <div id="mc-view-prod" style="flex:1;overflow-y:auto;">
+          <div id="mc-empty-prod" style="padding:32px 24px;text-align:center;color:#999;font-size:13px;">Aún no has guardado compras.<br>Calcula una y aparecerá aquí.</div>
+          <div id="mc-lista-prod"></div>
+          <div id="mc-footer-prod" style="display:none;padding:12px 14px;border-top:1px solid #eee;font-size:12px;color:#333;background:#fafafa;">
+            <div style="margin-bottom:4px;">Invertido: <b id="mc-tp-cost">$0</b> · A vender: <b id="mc-tp-sell">$0</b></div>
+            <div style="margin-bottom:8px;">Ganancia potencial: <b id="mc-tp-profit">$0</b> · Margen global: <b id="mc-tp-margin">—</b></div>
+            <button onclick="mcLimpiarTodo()" style="width:100%;padding:8px;background:#fff;color:#dc2626;border:1px solid #dc2626;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">Limpiar todas las compras</button>
+          </div>
+        </div>
+
+        <!-- Pestaña Ventas -->
+        <div id="mc-view-vent" style="flex:1;overflow-y:auto;display:none;">
+          <div style="padding:14px;background:#f9fafb;border-bottom:1px solid #eee;">
+            <label style="display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:4px;">Producto</label>
+            <select id="mc-v-prod" onchange="mcVentaProdChange()" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:10px;background:#fff;"></select>
+
+            <label style="display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:4px;">Cantidad vendida</label>
+            <input id="mc-v-qty" type="number" inputmode="numeric" placeholder="Ej: 5" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:10px;">
+
+            <label style="display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:4px;">Precio de venta</label>
+            <input id="mc-v-price" type="number" inputmode="decimal" placeholder="Se autocompleta" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:10px;">
+
+            <label style="display:block;font-size:12px;font-weight:600;color:#333;margin-bottom:4px;">Fecha</label>
+            <input id="mc-v-fecha" type="date" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box;margin-bottom:10px;">
+
+            <button onclick="mcGuardarVenta()" style="width:100%;padding:12px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;">Registrar venta</button>
+            <div id="mc-v-result" style="display:none;margin-top:10px;padding:10px;border-radius:6px;font-size:12px;line-height:1.5;"></div>
+          </div>
+
+          <div id="mc-vent-list" style="padding:0;"></div>
+          <div id="mc-empty-vent" style="padding:32px 24px;text-align:center;color:#999;font-size:13px;">Selecciona un producto para ver sus ventas.</div>
+
+          <div id="mc-footer-vent" style="display:none;padding:12px 14px;border-top:1px solid #eee;font-size:12px;color:#333;background:#fafafa;">
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <button onclick="mcFiltroVentas('hoy')" id="mc-f-hoy" style="flex:1;padding:6px;border:1px solid #2563eb;background:#2563eb;color:#fff;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Hoy</button>
+              <button onclick="mcFiltroVentas('todo')" id="mc-f-todo" style="flex:1;padding:6px;border:1px solid #2563eb;background:#fff;color:#2563eb;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">Todo</button>
+            </div>
+            <div style="margin-bottom:4px;">Ingresos: <b id="mc-tv-ing">$0</b> · Costo: <b id="mc-tv-cost">$0</b></div>
+            <div>Ganancia: <b id="mc-tv-profit">$0</b> · Margen: <b id="mc-tv-margin">—</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function(){
+      var KEY = 'matriz_data_v2';
+      var data = { compras: [], ventas: [] };
+      try { var raw = localStorage.getItem(KEY); if (raw) data = JSON.parse(raw) || data; } catch(e){}
+      if (!data.compras) data.compras = [];
+      if (!data.ventas) data.ventas = [];
+      var ventasFiltro = 'hoy';
+
+      function save(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
+      function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+      function hoy(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+      function key(n){ return n.toLowerCase().trim(); }
+
+      function stock(n){
+        var k = key(n), c=0, v=0;
+        data.compras.forEach(function(x){ if(key(x.nombre)===k) c+=x.cantidad; });
+        data.ventas.forEach(function(x){ if(key(x.producto)===k) v+=x.cantidad; });
+        return c-v;
+      }
+      function costoProm(n){
+        var k = key(n), q=0, s=0;
+        data.compras.forEach(function(x){ if(key(x.nombre)===k){ q+=x.cantidad; s+=x.costoReal*x.cantidad; } });
+        return q>0 ? s/q : 0;
+      }
+      function ultimoPrecio(n){
+        var k = key(n);
+        var lotes = data.compras.filter(function(x){ return key(x.nombre)===k; });
+        if (!lotes.length) return 0;
+        lotes.sort(function(a,b){ return new Date(b.fecha) - new Date(a.fecha); });
+        return lotes[0].precio;
+      }
+      function grupos(){
+        var map = {};
+        data.compras.forEach(function(c){
+          var k = key(c.nombre);
+          if (!map[k]) map[k] = { nombre: c.nombre, lotes: [] };
+          map[k].lotes.push(c);
+        });
+        return map;
+      }
+
+      window.matrizCalc = function(){ mcCalcular(true); };
+      window.matrizEjemplo = function(){
+        document.getElementById('mc-name').value='Jabón';
+        document.getElementById('mc-fecha').value=hoy();
+        document.getElementById('mc-cost').value='100';
+        document.getElementById('mc-qty').value='10';
+        document.getElementById('mc-extra').value='0';
+        document.getElementById('mc-price').value='150';
+        mcCalcular(false);
+      };
+
+      function mcCalcular(guardar){
+        var cost = parseFloat(document.getElementById('mc-cost').value)||0;
+        var qty  = parseFloat(document.getElementById('mc-qty').value)||0;
+        var extra= parseFloat(document.getElementById('mc-extra').value)||0;
+        var price= parseFloat(document.getElementById('mc-price').value)||0;
+        var name = document.getElementById('mc-name').value.trim();
+        var fecha= document.getElementById('mc-fecha').value || hoy();
+
+        if(!name){ alert('Escribe el nombre del producto.'); return; }
+        if(qty<=0){ alert('Indica cuántas unidades compraste.'); return; }
+        if(price<=0){ alert('Indica a cuánto vendes cada unidad.'); return; }
+
+        var realCost = cost + (extra/qty);
+        var profit = price - realCost;
+        var margin = (profit/price)*100;
+
+        var color, msg;
+        if(profit<0){color='#dc2626';msg='⚠️ Estás perdiendo dinero con este producto.';}
+        else if(margin<10){color='#d97706';msg='⚠️ Margen muy bajo. Un imprevisto te deja en pérdida.';}
+        else if(margin<20){color='#ca8a04';msg='Margen ajustado. Cuidado con los costos.';}
+        else{color='#16a34a';msg='✅ Buen margen.';}
+
+        var box = document.getElementById('mc-result');
+        box.style.display='block';
+        box.style.background=color+'15';
+        box.style.border='1px solid '+color;
+        box.style.color=color;
+        box.innerHTML='<b>'+esc(name)+'</b> · '+fecha+'<br>'+
+          'Costo real por unidad: <b>$'+realCost.toFixed(2)+'</b><br>'+
+          'Ganancia por unidad: <b>$'+profit.toFixed(2)+'</b><br>'+
+          'Margen real: <b>'+margin.toFixed(1)+'%</b><br><br><b>'+msg+'</b>';
+
+        if(guardar){
+          var existentes = data.compras.filter(function(c){ return key(c.nombre)===key(name); });
+          if(existentes.length>0){
+            var ok = confirm('Ya tienes un producto llamado "'+existentes[0].nombre+'".\n\n¿Es una nueva compra del MISMO producto (otro precio o cantidad)?\n\nAceptar = sí, guardar como nueva compra\nCancelar = no, quiero cambiar el nombre');
+            if(!ok){ return; }
+          }
+          data.compras.push({
+            nombre: existentes.length>0 ? existentes[0].nombre : name,
+            fecha: fecha, costoUnit: cost, cantidad: qty, extra: extra,
+            precio: price, costoReal: realCost, margen: margin
+          });
+          save();
+          mcRenderProd();
+          mcActualizarSelect();
+          var t = document.createElement('div');
+          t.textContent = '✓ Guardado en tus productos';
+          t.style.cssText = 'margin-top:8px;padding:6px 10px;background:#16a34a;color:#fff;border-radius:6px;font-size:12px;font-weight:600;text-align:center;';
+          box.appendChild(t);
+          setTimeout(function(){ if(t.parentNode) t.parentNode.removeChild(t); }, 2500);
+        }
+      }
+
+      window.mcBorrarCompra = function(nombre, idx){
+        if(!confirm('¿Eliminar esta compra de "'+nombre+'"?\n\nLas ventas ya registradas se conservarán.')) return;
+        var count = 0;
+        for(var i=0;i<data.compras.length;i++){
+          if(key(data.compras[i].nombre)===key(nombre)){
+            if(count===idx){ data.compras.splice(i,1); break; }
+            count++;
+          }
+        }
+        save();
+        mcRenderProd();
+        mcRenderVent();
+        mcActualizarSelect();
+      };
+
+      window.mcLimpiarTodo = function(){
+        if(!confirm('¿Borrar TODAS las compras? Las ventas se conservan.')) return;
+        data.compras = [];
+        save();
+        mcRenderProd();
+        mcRenderVent();
+        mcActualizarSelect();
+      };
+
+      window.mcBorrarVenta = function(idx){
+        if(!confirm('¿Eliminar esta venta?')) return;
+        data.ventas.splice(idx,1);
+        save();
+        mcRenderProd();
+        mcRenderVent();
+        mcActualizarSelect();
+      };
+
+      window.mcToggleLotes = function(containerId, arrowId) {
+        var el = document.getElementById(containerId);
+        var arrow = document.getElementById(arrowId);
+        if (el.style.display === 'none') {
+          el.style.display = 'block';
+          arrow.textContent = '▼';
+        } else {
+          el.style.display = 'none';
+          arrow.textContent = '▶';
+        }
+      };
+
+      function mcRenderProd(){
+        var cont = document.getElementById('mc-lista-prod');
+        document.getElementById('mc-count').textContent = data.compras.length;
+        cont.innerHTML = '';
+        var gs = grupos();
+        var keys = Object.keys(gs);
+        if (keys.length===0){
+          document.getElementById('mc-empty-prod').style.display='block';
+          document.getElementById('mc-footer-prod').style.display='none';
+          return;
+        }
+        document.getElementById('mc-empty-prod').style.display='none';
+        document.getElementById('mc-footer-prod').style.display='block';
+
+        var totalCost=0, totalSell=0;
+        
+        keys.forEach(function(k, gi){
+          var g = gs[k];
+          var st = stock(g.nombre);
+          var cp = costoProm(g.nombre);
+          var up = ultimoPrecio(g.nombre);
+          var mg = up>0 ? ((up-cp)/up)*100 : 0;
+          var colorM = mg<0?'#dc2626':(mg<10?'#d97706':(mg<20?'#ca8a04':'#16a34a'));
+
+          var head = document.createElement('div');
+          head.style.cssText='padding:10px 14px;background:#f3f4f6;border-top:1px solid #e5e7eb;font-size:13px;color:#111;font-weight:700;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;cursor:pointer;';
+          var agotado = st<=0 ? ' <span style="background:#dc2626;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;">AGOTADO</span>' : '';
+          
+          var lotesId = 'mc-lotes-'+gi;
+          var arrowId = 'mc-arrow-'+gi;
+          
+          head.onclick = function(){ mcToggleLotes(lotesId, arrowId); };
+          
+          head.innerHTML = '<div style="display:flex;align-items:center;gap:8px;"><span id="'+arrowId+'" style="font-size:11px;color:#333;">▼</span><span>'+esc(g.nombre)+agotado+'</span></div><span style="font-size:11px;font-weight:600;color:#666;">'+st+' en stock · costo prom $'+cp.toFixed(2)+' · margen <span style="color:'+colorM+';">'+mg.toFixed(1)+'%</span></span>';
+          cont.appendChild(head);
+
+          var lotesContainer = document.createElement('div');
+          lotesContainer.id = lotesId;
+          lotesContainer.style.display = 'block';
+
+          g.lotes.forEach(function(c, i){
+            totalCost += c.costoReal*c.cantidad;
+            totalSell += c.precio*c.cantidad;
+            var color = c.margen<0?'#dc2626':(c.margen<10?'#d97706':(c.margen<20?'#ca8a04':'#16a34a'));
+            var compraNum = 'Compra ' + String(i+1).padStart(2, '0');
+            var row = document.createElement('div');
+            
+            row.style.cssText='padding:8px 14px 8px 32px;border-bottom:1px solid #f3f4f6;font-size:12px;color:#333;display:flex;justify-content:space-between;align-items:center;gap:6px;';
+            row.innerHTML =
+              '<div style="flex:1;line-height:1.5;">'+
+                '<span style="font-weight:600;color:#111;">'+compraNum+'</span> · '+c.cantidad+' unid · $'+c.costoUnit.toFixed(2)+' c/u · $'+c.extra.toFixed(2)+' extra · Precio $'+c.precio.toFixed(2)+' · <span style="color:'+color+';font-weight:700;">Margen '+c.margen.toFixed(1)+'%</span>'+
+              '</div>'+
+              '<button onclick="mcBorrarCompra(\''+esc(g.nombre).replace(/'/g,"\\'")+'\','+i+')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:15px;padding:6px;">🗑</button>';
+            lotesContainer.appendChild(row);
+          });
+          cont.appendChild(lotesContainer);
+        });
+
+        document.getElementById('mc-tp-cost').textContent = '$'+totalCost.toFixed(2);
+        document.getElementById('mc-tp-sell').textContent = '$'+totalSell.toFixed(2);
+        document.getElementById('mc-tp-profit').textContent = '$'+(totalSell-totalCost).toFixed(2);
+        document.getElementById('mc-tp-margin').textContent = totalSell>0 ? ((totalSell-totalCost)/totalSell*100).toFixed(1)+'%' : '—';
+      }
+
+      window.mcActualizarSelect = function(){
+        var sel = document.getElementById('mc-v-prod');
+        var current = sel.value;
+        var gs = grupos();
+        var keys = Object.keys(gs);
+        sel.innerHTML = '<option value="">— Elige un producto —</option>';
+        keys.forEach(function(k){
+          var g = gs[k];
+          var st = stock(g.nombre);
+          var cp = costoProm(g.nombre);
+          var opt = document.createElement('option');
+          opt.value = g.nombre;
+          opt.textContent = g.nombre+' ('+st+' en stock · costo prom $'+cp.toFixed(2)+')';
+          if (st<=0) opt.textContent += ' — agotado';
+          sel.appendChild(opt);
+        });
+        if (current && gs[key(current)]) sel.value = current;
+      };
+
+      window.mcVentaProdChange = function(){
+        var prod = document.getElementById('mc-v-prod').value;
+        var price = document.getElementById('mc-v-price');
+        var box = document.getElementById('mc-v-result');
+        box.style.display = 'none';
+
+        if (!prod){
+          price.value='';
+          mcRenderVent();
+          return;
+        }
+        var up = ultimoPrecio(prod);
+        price.value = up.toFixed(2);
+        if (!document.getElementById('mc-v-fecha').value) document.getElementById('mc-v-fecha').value = hoy();
+        mcRenderVent();
+      };
+
+      window.mcGuardarVenta = function(){
+        var prod = document.getElementById('mc-v-prod').value;
+        var qty = parseFloat(document.getElementById('mc-v-qty').value)||0;
+        var price = parseFloat(document.getElementById('mc-v-price').value)||0;
+        var fecha = document.getElementById('mc-v-fecha').value || hoy();
+        var box = document.getElementById('mc-v-result');
+
+        if (!prod){ alert('Elige un producto.'); return; }
+        if (qty<=0){ alert('Indica la cantidad vendida.'); return; }
+        if (price<=0){ alert('Indica el precio de venta.'); return; }
+        
+        var st = stock(prod);
+        if (qty > st){
+          var seguir = confirm('Solo tienes '+st+' unidades de "'+prod+'" en stock.\n\n¿Registrar la venta igualmente? (el stock quedará negativo)');
+          if (!seguir) return;
+        }
+        
+        var cp = costoProm(prod);
+        var ingreso = qty*price;
+        var costoTotal = qty*cp;
+        var ganancia = ingreso - costoTotal;
+        var margen = ingreso>0 ? (ganancia/ingreso)*100 : 0;
+
+        data.ventas.push({
+          fecha: fecha, producto: prod, cantidad: qty, precioUnit: price,
+          costoUnit: cp, ingreso: ingreso, costoTotal: costoTotal,
+          ganancia: ganancia, margen: margen
+        });
+        save();
+        
+        var nuevoStock = stock(prod);
+
+        box.style.display='block';
+        box.style.background = ganancia>=0 ? '#16a34a15' : '#dc262615';
+        box.style.border = '1px solid '+(ganancia>=0?'#16a34a':'#dc2626');
+        box.style.color = ganancia>=0 ? '#16a34a' : '#dc2626';
+        
+        box.innerHTML = 'Ingreso: <b>$'+ingreso.toFixed(2)+'</b> · Costo: <b>$'+costoTotal.toFixed(2)+'</b> · Ganancia: <b>$'+ganancia.toFixed(2)+'</b> · Margen: <b>'+margen.toFixed(1)+'%</b><br>' +
+                        'Stock de '+esc(prod)+': <b>'+st+' → '+nuevoStock+'</b>';
+
+        document.getElementById('mc-v-qty').value='';
+        mcRenderProd();
+        mcActualizarSelect();
+        document.getElementById('mc-v-prod').value = prod;
+        mcVentaProdChange();
+      };
+
+      window.mcFiltroVentas = function(f){
+        ventasFiltro = f;
+        document.getElementById('mc-f-hoy').style.background = f==='hoy'?'#2563eb':'#fff';
+        document.getElementById('mc-f-hoy').style.color = f==='hoy'?'#fff':'#2563eb';
+        document.getElementById('mc-f-todo').style.background = f==='todo'?'#2563eb':'#fff';
+        document.getElementById('mc-f-todo').style.color = f==='todo'?'#fff':'#2563eb';
+        mcRenderVent();
+      };
+
+      function mcRenderVent(){
+        var cont = document.getElementById('mc-vent-list');
+        var empty = document.getElementById('mc-empty-vent');
+        var footer = document.getElementById('mc-footer-vent');
+        cont.innerHTML = '';
+        
+        var prod = document.getElementById('mc-v-prod').value;
+        var lista = data.ventas.map(function(v,i){ return {v:v,i:i}; });
+        
+        if (prod) {
+          lista = lista.filter(function(x){ return key(x.v.producto) === key(prod); });
+        } else {
+           lista = [];
+        }
+
+        if (ventasFiltro==='hoy') lista = lista.filter(function(x){ return x.v.fecha === hoy(); });
+        lista.sort(function(a,b){ return new Date(b.v.fecha) - new Date(a.v.fecha); });
+
+        if (lista.length===0){
+          empty.style.display='block';
+          footer.style.display='none';
+          return;
+        }
+        empty.style.display='none';
+        footer.style.display='block';
+
+        var ing=0, cost=0;
+        lista.forEach(function(x){
+          ing += x.v.ingreso;
+          cost += x.v.costoTotal;
+          var color = x.v.ganancia>=0 ? '#16a34a' : '#dc2626';
+          var row = document.createElement('div');
+          row.style.cssText='padding:8px 14px;border-bottom:1px solid #f3f4f6;font-size:12px;color:#333;display:flex;justify-content:space-between;align-items:center;gap:6px;';
+          row.innerHTML =
+            '<div style="flex:1;line-height:1.5;">'+
+              '<div style="font-weight:600;color:#111;">'+x.v.fecha+' · '+esc(x.v.producto)+'</div>'+
+              '<div>'+x.v.cantidad+' × $'+x.v.precioUnit.toFixed(2)+' = <b>$'+x.v.ingreso.toFixed(2)+'</b></div>'+
+              '<div style="font-size:11px;color:#666;">Costo: $'+x.v.costoTotal.toFixed(2)+' · Ganancia <span style="color:'+color+';font-weight:700;">$'+x.v.ganancia.toFixed(2)+' ('+x.v.margen.toFixed(1)+'%)</span></div>'+
+            '</div>'+
+            '<button onclick="mcBorrarVenta('+x.i+')" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:15px;padding:6px;">🗑</button>';
+          cont.appendChild(row);
+        });
+        var gan = ing - cost;
+        var mar = ing>0 ? (gan/ing)*100 : 0;
+        document.getElementById('mc-tv-ing').textContent = '$'+ing.toFixed(2);
+        document.getElementById('mc-tv-cost').textContent = '$'+cost.toFixed(2);
+        document.getElementById('mc-tv-profit').textContent = '$'+gan.toFixed(2);
+        document.getElementById('mc-tv-margin').textContent = ing>0 ? mar.toFixed(1)+'%' : '—';
+      }
+
+      window.mcTab = function(t){
+        var isProd = t==='prod';
+        document.getElementById('mc-view-prod').style.display = isProd?'block':'none';
+        document.getElementById('mc-view-vent').style.display = isProd?'none':'block';
+        document.getElementById('mc-tab-prod').style.borderBottomColor = isProd?'#2563eb':'transparent';
+        document.getElementById('mc-tab-prod').style.color = isProd?'#2563eb':'#666';
+        document.getElementById('mc-tab-prod').style.fontWeight = isProd?'700':'600';
+        document.getElementById('mc-tab-vent').style.borderBottomColor = !isProd?'#2563eb':'transparent';
+        document.getElementById('mc-tab-vent').style.color = !isProd?'#2563eb':'#666';
+        document.getElementById('mc-tab-vent').style.fontWeight = !isProd?'700':'600';
+        if (!isProd){ mcActualizarSelect(); mcVentaProdChange(); }
+      };
+
+      window.mcAbrirPanel = function(){
+        document.getElementById('mc-panel').style.transform='translateX(0)';
+        document.getElementById('mc-overlay').style.opacity='1';
+        document.getElementById('mc-overlay').style.pointerEvents='auto';
+      };
+      window.mcCerrarPanel = function(){
+        document.getElementById('mc-panel').style.transform='translateX(-100%)';
+        document.getElementById('mc-overlay').style.opacity='0';
+        document.getElementById('mc-overlay').style.pointerEvents='none';
+      };
+
+      // init
+      document.getElementById('mc-fecha').value = hoy();
+      document.getElementById('mc-v-fecha').value = hoy();
+      mcRenderProd();
+      mcActualizarSelect();
+      mcVentaProdChange();
+    })();
+    </script>
+  </div>
+
+  <!-- 5. Sección "Cómo funciona" -->
+  <section class="section container">
+    <h2 class="section-title">¿Cómo funciona?</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Regístrate</h4>
+        <p>Deja tus datos en el formulario de validación.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Prueba</h4>
+        <p>Introduce un costo de un insumo o de una venta.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Descubre</h4>
+        <p>Conoce tu margen real y recibe tu primer reporte.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Sección de prueba social -->
+  <div class="container section" style="padding-top: 0;">
+    <div class="social-proof">
+      Únete a los negocios que ya están dejando de adivinar sus márgenes. Los primeros registrados tendrán acceso prioritario al piloto.
+    </div>
+  </div>
+
+  <!-- 7. Formulario de validación -->
+  <section id="formulario-validacion" class="section container">
+    <div class="form-section">
+      <h2 class="section-title" style="margin-bottom: 10px;">Formulario de validación</h2>
+      <p style="color: var(--gris-texto); margin-bottom: 30px; text-align: center;">Responde estas preguntas para ayudarnos a construir exactamente lo que necesitas.</p>
+      
+      <!-- IFrame oculto para recibir la respuesta de Google sin recargar la página -->
+      <iframe name="oculto" id="oculto" style="display:none;"></iframe>
+
+      <!-- FORMULARIO CONECTADO A GOOGLE SHEETS -->
+      <form id="formularioMatriz" action="https://script.google.com/macros/s/AKfycbx6MBaNh0WHWRI-iLhxA1QrGT7VNUNwcdduZ54mfBWSPIxTdFkE2VNUoykYcsSyJt6s/exec" method="POST" target="oculto">
+        <div class="form-group">
+          <label>Nombre y sector del negocio (ej. paladar, cafetería, taller, tienda)</label>
+          <input type="text" name="negocio" placeholder="Tu respuesta..." required>
+        </div>
+
+        <div class="form-group">
+          <label>¿Cuál es tu mayor dolor hoy al calcular tus costos o márgenes?</label>
+          <textarea name="dolor" placeholder="Escribe tu respuesta aquí..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>¿Cómo calculas hoy tu costo real?</label>
+          <select name="metodo_actual" required>
+            <option value="">Selecciona una opción</option>
+            <option value="cuaderno">Cuaderno</option>
+            <option value="excel">Excel</option>
+            <option value="memoria">Memoria</option>
+            <option value="otro_software">Otro software</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>¿Usarías una herramienta que te diga al instante si estás ganando o perdiendo en cada venta?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="usaria" value="Si" required> Sí</label>
+            <label><input type="radio" name="usaria" value="No"> No</label>
+            <label><input type="radio" name="usaria" value="Tal_vez"> Tal vez</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>¿Cuánto pagarías al mes por una herramienta así? (CUP)</label>
+          <select name="precio" required>
+            <option value="">Selecciona un rango</option>
+            <option value="300-400">300 - 400 CUP</option>
+            <option value="400-500">400 - 500 CUP</option>
+            <option value="500-600">500 - 600 CUP</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Número de WhatsApp</label>
+          <input type="tel" name="whatsapp" placeholder="Ej: 53551234567" required>
+        </div>
+
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+          <button type="submit" class="btn-cta">Enviar mis respuestas</button>
+        </div>
+
+        <p class="privacy-text">
+          Tus datos solo se usarán para contactarte sobre este proyecto. No se compartirán con terceros. Puedes solicitar su eliminación en cualquier momento.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- 8. Llamado a la acción final -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Deja de adivinar. Toma el control de tu negocio hoy mismo.</h2>
+      <p>La claridad que necesitas para decidir mejor está a un clic de distancia.</p>
+      <a href="#formulario-validacion" class="btn-cta">Quiero probar la calculadora</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Matriz B2B &copy; 2026. Hecho en Cuba, para Cuba.</p>
+  </footer>
+
+  <!-- SCRIPT DE CONTROL DE INTERFAZ (MÉTODO IFRAME) -->
+  <script>
+    document.getElementById('formularioMatriz').addEventListener('submit', function(e) {
+      // NO usamos e.preventDefault() para permitir el envío nativo al iframe oculto
+      
+      var form = this;
+      var boton = form.querySelector('button[type="submit"]');
+      var textoOriginal = boton.textContent;
+      
+      boton.textContent = 'Enviando...';
+      boton.disabled = true;
+
+      setTimeout(function() {
+        alert('¡Gracias! Tus respuestas han sido guardadas correctamente.');
+        form.reset(); 
+        boton.textContent = textoOriginal;
+        boton.disabled = false;
+      }, 1500); 
+    });
+  </script>
+
+</body>
+</html>
